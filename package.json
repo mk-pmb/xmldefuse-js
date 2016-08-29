@@ -1,8 +1,9 @@
 { "name": "xmldefuse",
-  "version": "0.1.0",
-  "description": "Encode the predefined XML entities (amp, lt, gt, apos, quot). Opt-out CharRef 39 for HTML.",
+  "version": "0.1.1",
+  "description": "Encode the predefined XML entities (amp, lt, gt, apos, quot). Opt-out CharRef 39 for HTML. Bonus: Encode CDATA.",
   "keywords": [
     "apos",
+    "CDATA", "cdata",
     "CLI", "cli",
     "defuse",
     "encode",

@@ -3,11 +3,18 @@
 'use strict';
 
 var xmldefuse = require("xmldefuse"),
-  raw = "X &amp& <lt< >gt> 'apos' \"quot\" Y",
+  rawXY = "X &amp& <lt< >gt> 'apos' \"quot\" Y",
+  rawCD = "Have <![CDATA[ marks ]]> in ]]> text",
   eq = require("assert").strictEqual;
 
-eq(xmldefuse(raw),
+eq(xmldefuse(rawXY),
   "X &amp;amp&amp; &lt;lt&lt; &gt;gt&gt; &#39;apos&#39; &quot;quot&quot; Y");
 
-eq(xmldefuse.apos(raw),
+eq(xmldefuse.apos(rawXY),
   "X &amp;amp&amp; &lt;lt&lt; &gt;gt&gt; &apos;apos&apos; &quot;quot&quot; Y");
+
+eq(xmldefuse.cdata(rawXY),
+  "<![CDATA[X &amp& <lt< >gt> 'apos' \"quot\" Y]]>");
+
+eq(xmldefuse.cdata(rawCD),
+  "<![CDATA[Have <![CDATA[ marks ]]]]><![CDATA[> in ]]]]><![CDATA[> text]]>");

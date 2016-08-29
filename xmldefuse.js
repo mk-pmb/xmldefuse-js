@@ -19,4 +19,12 @@ function core(apos, text) {
 function xmldefuse(text) { return core('&#39;', text); }
 xmldefuse.apos = function (text) { return core('&apos;', text); };
 
+(function () {
+  var CDStart = '<![CDATA[', CDEnd = ']]>', splitContentTriad = /(\]{2})(>)/g,
+    restart = '$1' + CDEnd + CDStart + '$2';
+  xmldefuse.cdata = function (text) {
+    return CDStart + String(text).replace(splitContentTriad, restart) + CDEnd;
+  };
+}());
+
 module.exports = xmldefuse;

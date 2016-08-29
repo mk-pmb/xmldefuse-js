@@ -2,22 +2,28 @@
 xmldefuse
 =========
 Encode the [predefined XML entities][xml-predent] (amp, lt, gt, apos, quot).
-Opt-out [CharRef][xml-charref] 39 for HTML.
+Opt-out [CharRef][xml-charref] 39 for HTML. Bonus: Encode CDATA.
 
 Usage
 -----
 From [test.js](test.js):
-
 ```javascript
 var xmldefuse = require("xmldefuse"),
-  raw = "X &amp& <lt< >gt> 'apos' \"quot\" Y",
+  rawXY = "X &amp& <lt< >gt> 'apos' \"quot\" Y",
+  rawCD = "Have <![CDATA[ marks ]]> in ]]> text",
   eq = require("assert").strictEqual;
 
-eq(xmldefuse(raw),
+eq(xmldefuse(rawXY),
   "X &amp;amp&amp; &lt;lt&lt; &gt;gt&gt; &#39;apos&#39; &quot;quot&quot; Y");
 
-eq(xmldefuse.apos(raw),
+eq(xmldefuse.apos(rawXY),
   "X &amp;amp&amp; &lt;lt&lt; &gt;gt&gt; &apos;apos&apos; &quot;quot&quot; Y");
+
+eq(xmldefuse.cdata(rawXY),
+  "<![CDATA[X &amp& <lt< >gt> 'apos' \"quot\" Y]]>");
+
+eq(xmldefuse.cdata(rawCD),
+  "<![CDATA[Have <![CDATA[ marks ]]]]><![CDATA[> in ]]]]><![CDATA[> text]]>");
 ```
 
 CLI mode:
@@ -43,7 +49,7 @@ Related
   * [xmlunidefuse](https://www.npmjs.com/package/xmlunidefuse):
     Convert some additional, easily overlooked Unicode characters to CharRefs.
   * [xmldecode](https://www.npmjs.com/package/xmldecode):
-    Decode the predefined XML entities and CharRefs.
+    Decode the predefined XML entities, CharRefs and CDATA sections.
 
 
   [html-ents]: https://www.w3.org/TR/html4/sgml/entities.html
